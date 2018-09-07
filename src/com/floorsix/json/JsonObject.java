@@ -106,5 +106,10 @@ public class JsonObject extends Json
     children.add(json);
     return json;
   }
+
+  void add(Json json)
+  {
+    children.add(json);
+  }
 }
 

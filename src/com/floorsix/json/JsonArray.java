@@ -101,5 +101,10 @@ public class JsonArray extends Json
     array.add(json);
     return json;
   }
+
+  void add(Json json)
+  {
+    array.add(json);
+  }
 }
 
