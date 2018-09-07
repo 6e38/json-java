@@ -17,12 +17,6 @@ public class JsonObject extends Json
   }
 
   @Override
-  public Type getType()
-  {
-    return Type.Object;
-  }
-
-  @Override
   public String toJson()
   {
     StringBuilder s = keyToJson();

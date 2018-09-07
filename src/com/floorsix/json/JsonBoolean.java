@@ -15,12 +15,6 @@ public class JsonBoolean extends Json
   }
 
   @Override
-  public Type getType()
-  {
-    return Type.Boolean;
-  }
-
-  @Override
   public String toJson()
   {
     StringBuilder s = keyToJson();

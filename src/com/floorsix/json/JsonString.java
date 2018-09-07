@@ -15,12 +15,6 @@ public class JsonString extends Json
   }
 
   @Override
-  public Type getType()
-  {
-    return Type.String;
-  }
-
-  @Override
   public String toJson()
   {
     StringBuilder s = keyToJson();

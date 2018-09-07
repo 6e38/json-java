@@ -12,12 +12,6 @@ public class JsonNull extends Json
   }
 
   @Override
-  public Type getType()
-  {
-    return Type.Null;
-  }
-
-  @Override
   public String toJson()
   {
     StringBuilder s = keyToJson();

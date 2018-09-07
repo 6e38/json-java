@@ -17,12 +17,6 @@ public class JsonArray extends Json
   }
 
   @Override
-  public Type getType()
-  {
-    return Type.Array;
-  }
-
-  @Override
   public String toJson()
   {
     StringBuilder s = keyToJson();

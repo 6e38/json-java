@@ -15,12 +15,6 @@ public class JsonNumber extends Json
   }
 
   @Override
-  public Type getType()
-  {
-    return Type.Number;
-  }
-
-  @Override
   public String toJson()
   {
     StringBuilder s = keyToJson();

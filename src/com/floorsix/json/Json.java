@@ -6,15 +6,6 @@ package com.floorsix.json;
 
 public abstract class Json
 {
-  enum Type {
-    Null,
-    Boolean,
-    Number,
-    String,
-    Array,
-    Object
-  };
-
   protected String key;
 
   public Json(String key)
@@ -27,7 +18,6 @@ public abstract class Json
     return key;
   }
 
-  public abstract Type getType();
   public abstract String toJson();
 
   protected StringBuilder keyToJson()
