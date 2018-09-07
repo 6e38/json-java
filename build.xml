@@ -1,0 +1,27 @@
+<project>
+
+  <target name="clean">
+    <delete dir="build"/>
+  </target>
+
+  <target name="compile">
+    <mkdir dir="build/classes"/>
+    <javac srcdir="src" destdir="build/classes" includeantruntime="false"/>
+  </target>
+
+  <target name="jar" depends="compile">
+    <mkdir dir="build/jar"/>
+    <delete file="build/jar/f6json.jar"/>
+    <jar destfile="build/jar/f6json.jar">
+      <fileset dir="build/classes"/>
+      <manifest>
+        <attribute name="Main-Class" value="com.floorsix.json.Test"/>
+      </manifest>
+    </jar>
+  </target>
+
+  <target name="test">
+    <java jar="build/jar/f6json.jar" fork="true"/>
+  </target>
+
+</project>
