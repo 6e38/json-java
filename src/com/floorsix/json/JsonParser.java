@@ -229,11 +229,29 @@ public class JsonParser
   {
     JsonArray json = new JsonArray(key);
 
+    char b = readNextNonWhitespace(in);
+
+    if (b == ']')
+    {
+      return json;
+    }
+    else
+    {
+      try
+      {
+        in.unread(b);
+      }
+      catch (IOException e)
+      {
+        throw new InvalidJsonException("Error reading input while parsing array");
+      }
+    }
+
     while (true)
     {
       json.add(parseValue(null, in));
 
-      char b = readNextNonWhitespace(in);
+      b = readNextNonWhitespace(in);
 
       if (b == ']')
       {

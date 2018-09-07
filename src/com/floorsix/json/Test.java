@@ -5,35 +5,58 @@ public class Test
 {
   public static void main(String[] args)
   {
-    JsonObject jsonObject = new JsonObject(null);
-
-    jsonObject.add("MyNull");
-    jsonObject.add("MyTrueBoolean", true);
-    jsonObject.add("MyFalseBoolean", false);
-    jsonObject.add("MyNumber314", 3.1415);
-    jsonObject.add("MyNumber10", 10);
-    jsonObject.add("MyString", "The quick brown fox jumps over the lazy dog");
-
-    jsonObject.addArray("MyEmptyArray");
-
-    jsonObject.addObject("MyEmptyObject");
-
-    JsonArray jsonArray = jsonObject.addArray("MyArray");
-    jsonArray.add(true);
-    jsonArray.add(false);
-    jsonArray.add(49);
-    jsonArray.add("String");
-    jsonArray.addArray().add(7);
-    jsonArray.addObject().add("junk", "here");
-    jsonArray.add("End_of_Array");
-
-    jsonObject.addObject("LastObject").addObject("nested").add("key", "value");
-    System.out.println(jsonObject);
-
-    System.out.println("=== TEST 2 =====================================================================");
+    JsonObject jsonObject;
 
     try
     {
+      jsonObject = new JsonObject(null);
+      myassert(jsonObject.toString().equals("{}"), "Create test 1");
+
+      jsonObject = new JsonObject(null);
+      jsonObject.add("k1");
+      myassert(jsonObject.toString().equals("{\n\"k1\": null\n}"), "Create test 2");
+
+      jsonObject = new JsonObject(null);
+      jsonObject.add("k1", true);
+      myassert(jsonObject.toString().equals("{\n\"k1\": true\n}"), "Create test 3");
+
+      jsonObject = new JsonObject(null);
+      jsonObject.add("k1", false);
+      myassert(jsonObject.toString().equals("{\n\"k1\": false\n}"), "Create test 4");
+
+      jsonObject = new JsonObject(null);
+      jsonObject.add("k1", 3.1415);
+      myassert(jsonObject.toString().equals("{\n\"k1\": 3.1415\n}"), "Create test 5");
+
+      jsonObject = new JsonObject(null);
+      jsonObject.add("k1", 10);
+      myassert(jsonObject.toString().equals("{\n\"k1\": 10.0\n}"), "Create test 6");
+
+      jsonObject = new JsonObject(null);
+      jsonObject.add("k1", "The quick brown fox jumps over the lazy dog");
+      myassert(jsonObject.toString().equals("{\n\"k1\": \"The quick brown fox jumps over the lazy dog\"\n}"),
+          "Create test 7");
+
+      jsonObject = new JsonObject(null);
+      jsonObject.addArray("k1");
+      myassert(jsonObject.toString().equals("{\n\"k1\": []\n}"), "Create test 8");
+
+      jsonObject = new JsonObject(null);
+      jsonObject.addObject("k1");
+      myassert(jsonObject.toString().equals("{\n\"k1\": {}\n}"), "Create test 9");
+
+      jsonObject = new JsonObject(null);
+      JsonArray jsonArray = jsonObject.addArray("k1");
+      jsonArray.add(true);
+      jsonArray.add(false);
+      jsonArray.add(49);
+      jsonArray.add("s1");
+      myassert(jsonObject.toString().equals("{\n\"k1\": [\ntrue,\nfalse,\n49.0,\n\"s1\"\n]\n}"), "Create test 10");
+
+      jsonObject = new JsonObject(null);
+      jsonObject.addObject("k1").addObject("k2").add("k3", "s1");
+      myassert(jsonObject.toString().equals("{\n\"k1\": {\n\"k2\": {\n\"k3\": \"s1\"\n}\n}\n}"), "Create test 11");
+
       jsonObject = JsonParser.parse("{}");
       myassert(jsonObject.toJson().equals("{}"), "Parse test 1");
 
@@ -82,7 +105,110 @@ public class Test
       jsonObject = JsonParser.parse("{\"k1\":[]}");
       myassert(jsonObject.toJson().equals("{\n\"k1\": []\n}"), "Parse test 16");
 
-      System.out.println(jsonObject);
+      jsonObject = JsonParser.parse("{\"k1\":[[[]]]}");
+      myassert(jsonObject.toJson().equals("{\n\"k1\": [\n[\n[]\n]\n]\n}"), "Parse test 17");
+
+      jsonObject = JsonParser.parse("{\"k1\":[[[\"s\",1]]]}");
+      myassert(jsonObject.toJson().equals("{\n\"k1\": [\n[\n[\n\"s\",\n1.0\n]\n]\n]\n}"), "Parse test 18");
+
+      jsonObject = JsonParser.parse("{\"k1\":{}}");
+      myassert(jsonObject.toJson().equals("{\n\"k1\": {}\n}"), "Parse test 19");
+
+      jsonObject = JsonParser.parse("{\"k1\":{\"k2\":null}}");
+      myassert(jsonObject.toJson().equals("{\n\"k1\": {\n\"k2\": null\n}\n}"), "Parse test 20");
+
+      try
+      {
+        jsonObject = JsonParser.parse("");
+        myassert(false, "Exception test 1");
+      }
+      catch (InvalidJsonException e) {}
+
+      try
+      {
+        jsonObject = JsonParser.parse("{");
+        myassert(false, "Exception test 2");
+      }
+      catch (InvalidJsonException e) {}
+
+      try
+      {
+        jsonObject = JsonParser.parse("{\"");
+        myassert(false, "Exception test 3");
+      }
+      catch (InvalidJsonException e) {}
+
+      try
+      {
+        jsonObject = JsonParser.parse("{\"k1");
+        myassert(false, "Exception test 4");
+      }
+      catch (InvalidJsonException e) {}
+
+      try
+      {
+        jsonObject = JsonParser.parse("{\"k1\"}");
+        myassert(false, "Exception test 5");
+      }
+      catch (InvalidJsonException e) {}
+
+      try
+      {
+        jsonObject = JsonParser.parse("{\"k1\":}");
+        myassert(false, "Exception test 6");
+      }
+      catch (InvalidJsonException e) {}
+
+      try
+      {
+        jsonObject = JsonParser.parse("{\"k1\":1,}");
+        myassert(false, "Exception test 7");
+      }
+      catch (InvalidJsonException e) {}
+
+      try
+      {
+        jsonObject = JsonParser.parse("{\"k1\":1.1.}");
+        myassert(false, "Exception test 8");
+      }
+      catch (InvalidJsonException e) {}
+
+      try
+      {
+        jsonObject = JsonParser.parse("{\"k1\":1,2}");
+        myassert(false, "Exception test 9");
+      }
+      catch (InvalidJsonException e) {}
+
+      try
+      {
+        jsonObject = JsonParser.parse("{k1:1}");
+        myassert(false, "Exception test 10");
+      }
+      catch (InvalidJsonException e) {}
+
+      try
+      {
+        jsonObject = JsonParser.parse("{[}");
+        myassert(false, "Exception test 11");
+      }
+      catch (InvalidJsonException e) {}
+
+      try
+      {
+        jsonObject = JsonParser.parse("{]}");
+        myassert(false, "Exception test 12");
+      }
+      catch (InvalidJsonException e) {}
+
+      try
+      {
+        jsonObject = JsonParser.parse("{[\"k1\":1]}");
+        myassert(false, "Exception test 13");
+      }
+      catch (InvalidJsonException e) {}
+
+      System.out.println("PASS: All tests passed");
     }
     catch (InvalidJsonException e)
     {
