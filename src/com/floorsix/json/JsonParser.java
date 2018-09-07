@@ -1,5 +1,5 @@
 
-package json;
+package com.floorsix.json;
 
 import java.io.ByteArrayInputStream;
 import java.io.PushbackInputStream;
@@ -266,11 +266,29 @@ public class JsonParser
   {
     JsonObject json = new JsonObject(key);
 
+    char b = readNextNonWhitespace(in);
+
+    if (b == '}')
+    {
+      return json;
+    }
+    else
+    {
+      try
+      {
+        in.unread(b);
+      }
+      catch (IOException e)
+      {
+        throw new InvalidJsonException("Error reading input while parsing object");
+      }
+    }
+
     while (true)
     {
       key = parseKey(in);
 
-      char b = readNextNonWhitespace(in);
+      b = readNextNonWhitespace(in);
 
       if (b == ':')
       {

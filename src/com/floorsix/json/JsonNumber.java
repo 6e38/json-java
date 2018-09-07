@@ -1,5 +1,5 @@
 
-package json;
+package com.floorsix.json;
 
 public class JsonNumber extends Json
 {
