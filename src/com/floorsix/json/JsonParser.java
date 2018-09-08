@@ -5,8 +5,9 @@
 package com.floorsix.json;
 
 import java.io.ByteArrayInputStream;
-import java.io.PushbackInputStream;
+import java.io.InputStream;
 import java.io.IOException;
+import java.io.PushbackInputStream;
 
 public class JsonParser
 {
@@ -17,6 +18,11 @@ public class JsonParser
     Sign,       // can be + or -
     Exponent,   // can be digit
   };
+
+  public static JsonObject parse(InputStream in) throws InvalidJsonException
+  {
+    return parseObject(new PushbackInputStream(in));
+  }
 
   public static JsonObject parse(String raw) throws InvalidJsonException
   {
