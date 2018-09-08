@@ -51,62 +51,187 @@ public class JsonObject extends Json
 
   public Json get(String key)
   {
-    for (Json json : children)
+    if (key != null)
     {
-      if (json.getKey().equals(key))
+      for (Json json : children)
       {
-        return json;
+        if (json.getKey().equals(key))
+        {
+          return json;
+        }
       }
     }
 
     return null;
   }
 
-  public JsonNull add(String key)
+  public JsonNull set(String key)
   {
-    JsonNull json = new JsonNull(key);
-    children.add(json);
-    return json;
+    Json json = get(key);
+
+    if (json != null)
+    {
+      if (!(json instanceof JsonNull))
+      {
+        children.remove(json);
+        json = null;
+      }
+    }
+
+    if (json == null)
+    {
+      json = new JsonNull(key);
+      children.add(json);
+    }
+
+    return (JsonNull)json;
   }
 
-  public JsonBoolean add(String key, boolean bool)
+  public JsonBoolean set(String key, boolean bool)
   {
-    JsonBoolean json = new JsonBoolean(key, bool);
-    children.add(json);
-    return json;
+    Json json = get(key);
+
+    if (json != null)
+    {
+      if (json instanceof JsonBoolean)
+      {
+        ((JsonBoolean)json).set(bool);
+      }
+      else
+      {
+        children.remove(json);
+        json = null;
+      }
+    }
+
+    if (json == null)
+    {
+      json = new JsonBoolean(key, bool);
+      children.add(json);
+    }
+
+    return (JsonBoolean)json;
   }
 
-  public JsonNumber add(String key, double number)
+  public JsonNumber set(String key, double number)
   {
-    JsonNumber json = new JsonNumber(key, number);
-    children.add(json);
-    return json;
+    Json json = get(key);
+
+    if (json != null)
+    {
+      if (json instanceof JsonNumber)
+      {
+        ((JsonNumber)json).set(number);
+      }
+      else
+      {
+        children.remove(json);
+        json = null;
+      }
+    }
+
+    if (json == null)
+    {
+      json = new JsonNumber(key, number);
+      children.add(json);
+    }
+
+    return (JsonNumber)json;
   }
 
-  public JsonString add(String key, String string)
+  public JsonString set(String key, String string)
   {
-    JsonString json = new JsonString(key, string);
-    children.add(json);
-    return json;
+    Json json = get(key);
+
+    if (json != null)
+    {
+      if (json instanceof JsonString)
+      {
+        ((JsonString)json).set(string);
+      }
+      else
+      {
+        children.remove(json);
+        json = null;
+      }
+    }
+
+    if (json == null)
+    {
+      json = new JsonString(key, string);
+      children.add(json);
+    }
+
+    return (JsonString)json;
   }
 
-  public JsonArray addArray(String key)
+  public JsonArray setArray(String key)
   {
-    JsonArray json = new JsonArray(key);
-    children.add(json);
-    return json;
+    Json json = get(key);
+
+    if (json != null)
+    {
+      if (json instanceof JsonArray)
+      {
+        ((JsonArray)json).clear();
+      }
+      else
+      {
+        children.remove(json);
+        json = null;
+      }
+    }
+
+    if (json == null)
+    {
+      json = new JsonArray(key);
+      children.add(json);
+    }
+
+    return (JsonArray)json;
   }
 
-  public JsonObject addObject(String key)
+  public JsonObject setObject(String key)
   {
-    JsonObject json = new JsonObject(key);
-    children.add(json);
-    return json;
+    Json json = get(key);
+
+    if (json != null)
+    {
+      if (json instanceof JsonObject)
+      {
+        ((JsonObject)json).clear();
+      }
+      else
+      {
+        children.remove(json);
+        json = null;
+      }
+    }
+
+    if (json == null)
+    {
+      json = new JsonObject(key);
+      children.add(json);
+    }
+
+    return (JsonObject)json;
   }
 
-  void add(Json json)
+  void set(Json json)
   {
+    Json existing = get(json.getKey());
+
+    if (existing != null)
+    {
+      children.remove(existing);
+    }
+
     children.add(json);
+  }
+
+  public void clear()
+  {
+    children.clear();
   }
 }
 

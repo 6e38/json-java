@@ -103,5 +103,10 @@ public class JsonArray extends Json
   {
     array.add(json);
   }
+
+  public void clear()
+  {
+    array.clear();
+  }
 }
 

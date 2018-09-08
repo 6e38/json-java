@@ -314,7 +314,7 @@ public class JsonParser
 
       if (b == ':')
       {
-        json.add(parseValue(key, in));
+        json.set(parseValue(key, in));
 
         b = readNextNonWhitespace(in);
 

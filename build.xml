@@ -21,7 +21,9 @@
   </target>
 
   <target name="test">
-    <java jar="build/jar/f6json.jar" fork="true"/>
+    <java jar="build/jar/f6json.jar" fork="true">
+      <jvmarg value="-ea"/>
+    </java>
   </target>
 
 </project>
