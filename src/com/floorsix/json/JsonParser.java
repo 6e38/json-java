@@ -18,11 +18,6 @@ public class JsonParser
     Exponent,   // can be digit
   };
 
-  public static JsonObject parseFile(String filename)
-  {
-    return null;
-  }
-
   public static JsonObject parse(String raw) throws InvalidJsonException
   {
     return parseObject(new PushbackInputStream(new ByteArrayInputStream(raw.getBytes())));
