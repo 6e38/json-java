@@ -5,6 +5,7 @@
 package com.floorsix.json;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class JsonArray extends Json
 {
@@ -61,7 +62,12 @@ public class JsonArray extends Json
     {
     }
 
-    return null;
+    return json;
+  }
+
+  public List<Json> getArray()
+  {
+    return array;
   }
 
   public JsonBoolean add(boolean bool)

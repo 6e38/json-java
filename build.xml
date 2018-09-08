@@ -6,7 +6,9 @@
 
   <target name="compile">
     <mkdir dir="build/classes"/>
-    <javac srcdir="src" destdir="build/classes" includeantruntime="false"/>
+    <javac srcdir="src" destdir="build/classes" includeantruntime="false">
+      <exclude name="com/floorsix/json/Test.java"/>
+    </javac>
   </target>
 
   <target name="jar" depends="compile">
@@ -14,14 +16,18 @@
     <delete file="build/jar/f6json.jar"/>
     <jar destfile="build/jar/f6json.jar">
       <fileset dir="build/classes"/>
-      <manifest>
-        <attribute name="Main-Class" value="com.floorsix.json.Test"/>
-      </manifest>
     </jar>
   </target>
 
   <target name="test">
-    <java jar="build/jar/f6json.jar" fork="true">
+    <mkdir dir="build/debug"/>
+    <javac
+        srcdir="src"
+        destdir="build/debug"
+        includeantruntime="false"
+        debug="on"
+        debuglevel="lines,vars,source"/>
+    <java classname="com.floorsix.json.Test" classpath="build/debug" fork="true">
       <jvmarg value="-ea"/>
     </java>
   </target>
