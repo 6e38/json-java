@@ -1,33 +1,40 @@
-<project>
+<project default="compile">
+
+  <property name="srcpath" value="src"/>
+  <property name="buildpath" value="build"/>
+  <property name="classpath" value="${buildpath}/classes"/>
+  <property name="debugpath" value="${buildpath}/debug"/>
+  <property name="jarpath" value="${buildpath}/jar"/>
+  <property name="jarfile" value="f6json.jar"/>
+
+  <property name="build.sysclasspath" value="ignore"/>
 
   <target name="clean">
-    <delete dir="build"/>
+    <delete dir="${buildpath}"/>
   </target>
 
   <target name="compile">
-    <mkdir dir="build/classes"/>
-    <javac srcdir="src" destdir="build/classes" includeantruntime="false">
+    <mkdir dir="${classpath}"/>
+    <javac srcdir="${srcpath}" destdir="${classpath}">
       <exclude name="com/floorsix/json/Test.java"/>
     </javac>
   </target>
 
+  <target name="debug">
+    <mkdir dir="${debugpath}"/>
+    <javac srcdir="${srcpath}" destdir="${debugpath}" debug="on" debuglevel="lines,vars,source"/>
+  </target>
+
   <target name="jar" depends="compile">
-    <mkdir dir="build/jar"/>
-    <delete file="build/jar/f6json.jar"/>
-    <jar destfile="build/jar/f6json.jar">
-      <fileset dir="build/classes"/>
+    <mkdir dir="${jarpath}"/>
+    <delete file="${jarpath}/${jarfile}"/>
+    <jar destfile="${jarpath}/${jarfile}">
+      <fileset dir="${classpath}"/>
     </jar>
   </target>
 
-  <target name="test">
-    <mkdir dir="build/debug"/>
-    <javac
-        srcdir="src"
-        destdir="build/debug"
-        includeantruntime="false"
-        debug="on"
-        debuglevel="lines,vars,source"/>
-    <java classname="com.floorsix.json.Test" classpath="build/debug" fork="true">
+  <target name="test" depends="debug">
+    <java classname="com.floorsix.json.Test" classpath="${debugpath}" fork="true">
       <jvmarg value="-ea"/>
     </java>
   </target>
