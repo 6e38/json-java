@@ -82,6 +82,14 @@ public class Test
       assert jsonObject.toString().equals("{\n\"k1\": 31415926\n}") : jsonObject;
 
       jsonObject = new JsonObject(null);
+      jsonObject.set("k1", 31415926535897l);
+      assert jsonObject.toString().equals("{\n\"k1\": 3.1415926535897E+13\n}") : jsonObject;
+
+      jsonObject = new JsonObject(null);
+      jsonObject.set("k1", -31415926535897l);
+      assert jsonObject.toString().equals("{\n\"k1\": -3.1415926535897E+13\n}") : jsonObject;
+
+      jsonObject = new JsonObject(null);
       jsonObject.set("k1", 0.1);
       assert jsonObject.toString().equals("{\n\"k1\": 0.1\n}") : jsonObject;
 
