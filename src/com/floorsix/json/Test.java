@@ -4,6 +4,7 @@
 
 package com.floorsix.json;
 
+import java.util.Date;
 import java.util.List;
 
 public class Test
@@ -57,12 +58,40 @@ public class Test
       assert jsonObject.toString().equals("{\n\"k1\": false\n}");
 
       jsonObject = new JsonObject(null);
-      jsonObject.set("k1", 3.1415);
-      assert jsonObject.toString().equals("{\n\"k1\": 3.1415\n}");
+      jsonObject.set("k1", 3);
+      assert jsonObject.toString().equals("{\n\"k1\": 3\n}") : jsonObject;
+
+      jsonObject = new JsonObject(null);
+      jsonObject.set("k1", 3.1415926535);
+      assert jsonObject.toString().equals("{\n\"k1\": 3.1415926535\n}") : jsonObject;
+
+      jsonObject = new JsonObject(null);
+      jsonObject.set("k1", -3.1);
+      assert jsonObject.toString().equals("{\n\"k1\": -3.1\n}") : jsonObject;
+
+      jsonObject = new JsonObject(null);
+      jsonObject.set("k1", 3.1);
+      assert jsonObject.toString().equals("{\n\"k1\": 3.1\n}") : jsonObject;
+
+      jsonObject = new JsonObject(null);
+      jsonObject.set("k1", 3.1415926);
+      assert jsonObject.toString().equals("{\n\"k1\": 3.1415926\n}") : jsonObject;
+
+      jsonObject = new JsonObject(null);
+      jsonObject.set("k1", 31415926);
+      assert jsonObject.toString().equals("{\n\"k1\": 31415926\n}") : jsonObject;
+
+      jsonObject = new JsonObject(null);
+      jsonObject.set("k1", 0.1);
+      assert jsonObject.toString().equals("{\n\"k1\": 0.1\n}") : jsonObject;
+
+      jsonObject = new JsonObject(null);
+      jsonObject.set("k1", 1E-5);
+      assert jsonObject.toString().equals("{\n\"k1\": 1.0E-5\n}") : jsonObject;
 
       jsonObject = new JsonObject(null);
       jsonObject.set("k1", 10);
-      assert jsonObject.toString().equals("{\n\"k1\": 10.0\n}") : "Create test 6";
+      assert jsonObject.toString().equals("{\n\"k1\": 10\n}") : jsonObject;
 
       jsonObject = new JsonObject(null);
       jsonObject.set("k1", "The quick brown fox jumps over the lazy dog");
@@ -82,11 +111,11 @@ public class Test
       jsonArray.add(false);
       jsonArray.add(49);
       jsonArray.add("s1");
-      assert jsonObject.toString().equals("{\n\"k1\": [\ntrue,\nfalse,\n49.0,\n\"s1\"\n]\n}");
+      assert jsonObject.toString().equals("{\n\"k1\": [\ntrue,\nfalse,\n49,\n\"s1\"\n]\n}") : jsonObject;
 
       jsonObject = new JsonObject(null);
       jsonObject.setObject("k1").setObject("k2").set("k3", "s1");
-      assert jsonObject.toString().equals("{\n\"k1\": {\n\"k2\": {\n\"k3\": \"s1\"\n}\n}\n}");
+      assert jsonObject.toString().equals("{\n\"k1\": {\n\"k2\": {\n\"k3\": \"s1\"\n}\n}\n}") : jsonObject;
 
       jsonObject = new JsonObject(null);
       jsonObject.set("k1");
@@ -106,7 +135,7 @@ public class Test
       jsonObject = new JsonObject(null);
       jsonObject.set("k1", 1);
       jsonObject.set("k1", 2);
-      assert jsonObject.toString().equals("{\n\"k1\": 2.0\n}");
+      assert jsonObject.toString().equals("{\n\"k1\": 2\n}");
 
       jsonObject = new JsonObject(null);
       jsonObject.setObject("k1");
@@ -126,7 +155,7 @@ public class Test
       jsonObject = new JsonObject(null);
       jsonObject.set("k1");
       jsonObject.set("k1", 1);
-      assert jsonObject.toString().equals("{\n\"k1\": 1.0\n}");
+      assert jsonObject.toString().equals("{\n\"k1\": 1\n}");
 
       jsonObject = new JsonObject(null);
       jsonObject.set("k1");
@@ -143,6 +172,14 @@ public class Test
       jsonObject.setObject("k1");
       assert jsonObject.toString().equals("{\n\"k1\": {}\n}");
 
+      jsonObject = new JsonObject(null);
+      jsonObject.set("k1", 0.0000000000012);
+      assert jsonObject.toString().equals("{\n\"k1\": 1.2E-12\n}") : jsonObject;
+
+      jsonObject = new JsonObject(null);
+      jsonObject.set("k1", 2001000000000d);
+      assert jsonObject.toString().equals("{\n\"k1\": 2.001E+12\n}") : jsonObject;
+
       jsonObject = JsonParser.parse("{}");
       assert jsonObject.toJson().equals("{}");
 
@@ -150,7 +187,7 @@ public class Test
       assert jsonObject.toJson().equals("{\n\"key\": \"value\"\n}");
 
       jsonObject = JsonParser.parse("{\n\"key\": 10\n}");
-      assert jsonObject.toJson().equals("{\n\"key\": 10.0\n}");
+      assert jsonObject.toJson().equals("{\n\"key\": 10\n}");
 
       jsonObject = JsonParser.parse("{\n\"key\": 10.1\n}");
       assert jsonObject.toJson().equals("{\n\"key\": 10.1\n}");
@@ -159,22 +196,22 @@ public class Test
       assert jsonObject.toJson().equals("{\n\"key\": -10.1\n}");
 
       jsonObject = JsonParser.parse("{\n\"key\": 10.1e+1\n}");
-      assert jsonObject.toJson().equals("{\n\"key\": 101.0\n}");
+      assert jsonObject.toJson().equals("{\n\"key\": 101\n}");
 
       jsonObject = JsonParser.parse("{\n\"key\": 10.1e-1\n}");
-      assert jsonObject.toJson().equals("{\n\"key\": 1.01\n}");
+      assert jsonObject.toJson().equals("{\n\"key\": 1.01\n}") : jsonObject;
 
       jsonObject = JsonParser.parse("{\n\"key\": 0\n}");
-      assert jsonObject.toJson().equals("{\n\"key\": 0.0\n}");
+      assert jsonObject.toJson().equals("{\n\"key\": 0\n}");
 
       jsonObject = JsonParser.parse("{\n\"key\": 0.1234\n}");
       assert jsonObject.toJson().equals("{\n\"key\": 0.1234\n}");
 
       jsonObject = JsonParser.parse("{\n\"k1\": 1, \"k2\" : 2\n}");
-      assert jsonObject.toJson().equals("{\n\"k1\": 1.0,\n\"k2\": 2.0\n}");
+      assert jsonObject.toJson().equals("{\n\"k1\": 1,\n\"k2\": 2\n}");
 
       jsonObject = JsonParser.parse("{\n\"k1\": 1, \"k2\" : 2,\"k3\":\"s3\"\n}");
-      assert jsonObject.toJson().equals("{\n\"k1\": 1.0,\n\"k2\": 2.0,\n\"k3\": \"s3\"\n}");
+      assert jsonObject.toJson().equals("{\n\"k1\": 1,\n\"k2\": 2,\n\"k3\": \"s3\"\n}");
 
       jsonObject = JsonParser.parse("{\"k1\":true}");
       assert jsonObject.toJson().equals("{\n\"k1\": true\n}");
@@ -195,7 +232,7 @@ public class Test
       assert jsonObject.toJson().equals("{\n\"k1\": [\n[\n[]\n]\n]\n}");
 
       jsonObject = JsonParser.parse("{\"k1\":[[[\"s\",1]]]}");
-      assert jsonObject.toJson().equals("{\n\"k1\": [\n[\n[\n\"s\",\n1.0\n]\n]\n]\n}");
+      assert jsonObject.toJson().equals("{\n\"k1\": [\n[\n[\n\"s\",\n1\n]\n]\n]\n}");
 
       jsonObject = JsonParser.parse("{\"k1\":{}}");
       assert jsonObject.toJson().equals("{\n\"k1\": {}\n}");
@@ -225,6 +262,16 @@ public class Test
       assert list.size() == 5;
       assert list.get(0) instanceof JsonNumber;
       assert (int)((JsonNumber)list.get(1)).get() == 1;
+
+      jsonObject = new JsonObject(null);
+      Date date = new Date();
+      jsonObject.set("timestamp", date.getTime());
+      JsonObject jo = JsonParser.parse(jsonObject.toJson());
+      Json json = jo.get("timestamp");
+      assert json instanceof JsonNumber : json;
+      long timestamp = ((JsonNumber)json).getLong();
+      Date parseDate = new Date(timestamp);
+      assert parseDate.equals(date) : "Dates " + parseDate + " != " + date;
     }
     catch (InvalidJsonException e)
     {

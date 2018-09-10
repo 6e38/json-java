@@ -17,9 +17,29 @@ public class JsonNumber extends Json
   @Override
   public String toJson()
   {
+    final double almost0 = 1e-16;
+
     StringBuilder s = keyToJson();
 
-    s.append(number);
+    double fraction = number - (double)(int)number;
+
+    if (Math.abs(fraction) < almost0)
+    {
+      s.append((long)number);
+    }
+    else
+    {
+      s.append(number);
+    }
+
+    if (Math.abs(number) >= 10)
+    {
+      int i = s.indexOf("E");
+      if (i != -1)
+      {
+        s.insert(i + 1, '+');
+      }
+    }
 
     return s.toString();
   }
