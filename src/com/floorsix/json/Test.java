@@ -89,6 +89,12 @@ public class Test
       jsonObject.set("k1", -31415926535897l);
       assert jsonObject.toString().equals("{\n\"k1\": -3.1415926535897E+13\n}") : jsonObject;
 
+      // The following test was added to catch a bug where the code would replace the 'E' in
+      // the *key* with "E+"
+      jsonObject = new JsonObject(null);
+      jsonObject.set("k1E20", -31415926535897l);
+      assert jsonObject.toString().equals("{\n\"k1E20\": -3.1415926535897E+13\n}") : jsonObject;
+
       jsonObject = new JsonObject(null);
       jsonObject.set("k1", 0.1);
       assert jsonObject.toString().equals("{\n\"k1\": 0.1\n}") : jsonObject;
@@ -376,6 +382,47 @@ public class Test
       assert false;
     }
     catch (InvalidJsonException e) {}
+
+    jsonObject = new JsonObject(null);
+    jsonObject.set("Interesting string\"\"\n\t\f\b\r\\/", "\"\"\n\t\f\b\r\\/");
+    assert jsonObject.toString().equals("{\n\"Interesting string\\\"\\\"\\n\\t\\f\\b\\r\\\\\\/\": " +
+        "\"\\\"\\\"\\n\\t\\f\\b\\r\\\\\\/\"\n}") : jsonObject;
+
+    try
+    {
+      jsonObject = JsonParser.parse("{\"k1\":\"string\\nvalue\"}");
+      assert jsonObject.toString().equals("{\n\"k1\": \"string\\nvalue\"\n}") : jsonObject;
+    }
+    catch (InvalidJsonException e)
+    {
+      assert false : e;
+    }
+
+    try
+    {
+      jsonObject = JsonParser.parse("{\"k1\":\"string\\nvalue\"}");
+      Json j = jsonObject.get("k1");
+      assert j instanceof JsonString;
+      assert ((JsonString)j).get().equals("string\nvalue") : j;
+      assert jsonObject.toString().equals("{\n\"k1\": \"string\\nvalue\"\n}") : jsonObject;
+    }
+    catch (InvalidJsonException e)
+    {
+      assert false : e;
+    }
+
+    try
+    {
+      jsonObject = JsonParser.parse("{\"k1\":\"string\\\"value\"}");
+      Json j = jsonObject.get("k1");
+      assert j instanceof JsonString;
+      assert ((JsonString)j).get().equals("string\"value") : j;
+      assert jsonObject.toString().equals("{\n\"k1\": \"string\\\"value\"\n}") : jsonObject;
+    }
+    catch (InvalidJsonException e)
+    {
+      assert false : e;
+    }
   }
 }
 
