@@ -4,6 +4,9 @@
 
 package com.floorsix.json;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 public class JsonNumber extends Json
 {
   private double number;
@@ -15,11 +18,13 @@ public class JsonNumber extends Json
   }
 
   @Override
-  public String toJson()
+  public void toJson(OutputStream out) throws IOException
   {
+    keyToJson(out);
+
     final double almost0 = 1e-16;
 
-    StringBuilder s = keyToJson();
+    StringBuilder s = new StringBuilder();
 
     double fraction = number - (double)(int)number;
 
@@ -41,7 +46,7 @@ public class JsonNumber extends Json
       }
     }
 
-    return s.toString();
+    out.write(s.toString().getBytes());
   }
 
   public void set(double number)

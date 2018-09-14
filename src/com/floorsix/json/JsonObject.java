@@ -4,6 +4,8 @@
 
 package com.floorsix.json;
 
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.ArrayList;
 
 public class JsonObject extends Json
@@ -17,11 +19,11 @@ public class JsonObject extends Json
   }
 
   @Override
-  public String toJson()
+  public void toJson(OutputStream out) throws IOException
   {
-    StringBuilder s = keyToJson();
+    keyToJson(out);
 
-    s.append("{");
+    out.write('{');
 
     if (children.size() > 0)
     {
@@ -31,22 +33,21 @@ public class JsonObject extends Json
       {
         if (json == first)
         {
-          s.append("\n");
+          out.write('\n');
         }
         else
         {
-          s.append(",\n");
+          out.write(',');
+          out.write('\n');
         }
 
-        s.append(json.toJson());
+        json.toJson(out);
       }
 
-      s.append("\n");
+      out.write('\n');
     }
 
-    s.append("}");
-
-    return s.toString();
+    out.write('}');
   }
 
   public Json get(String key)

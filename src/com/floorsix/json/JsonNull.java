@@ -4,6 +4,9 @@
 
 package com.floorsix.json;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 public class JsonNull extends Json
 {
   public JsonNull(String key)
@@ -12,13 +15,11 @@ public class JsonNull extends Json
   }
 
   @Override
-  public String toJson()
+  public void toJson(OutputStream out) throws IOException
   {
-    StringBuilder s = keyToJson();
+    keyToJson(out);
 
-    s.append("null");
-
-    return s.toString();
+    out.write("null".getBytes());
   }
 }
 

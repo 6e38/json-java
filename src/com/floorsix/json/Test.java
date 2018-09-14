@@ -47,7 +47,7 @@ public class Test
 
       jsonObject = new JsonObject(null);
       jsonObject.set("k1");
-      assert jsonObject.toString().equals("{\n\"k1\": null\n}");
+      assert jsonObject.toString().equals("{\n\"k1\": null\n}") : jsonObject;
 
       jsonObject = new JsonObject(null);
       jsonObject.set("k1", true);
@@ -189,67 +189,67 @@ public class Test
       assert jsonObject.toString().equals("{\n\"k1\": 2.001E+12\n}") : jsonObject;
 
       jsonObject = JsonParser.parse("{}");
-      assert jsonObject.toJson().equals("{}");
+      assert jsonObject.toString().equals("{}");
 
       jsonObject = JsonParser.parse("{\"key\":\"value\"}");
-      assert jsonObject.toJson().equals("{\n\"key\": \"value\"\n}");
+      assert jsonObject.toString().equals("{\n\"key\": \"value\"\n}");
 
       jsonObject = JsonParser.parse("{\n\"key\": 10\n}");
-      assert jsonObject.toJson().equals("{\n\"key\": 10\n}");
+      assert jsonObject.toString().equals("{\n\"key\": 10\n}");
 
       jsonObject = JsonParser.parse("{\n\"key\": 10.1\n}");
-      assert jsonObject.toJson().equals("{\n\"key\": 10.1\n}");
+      assert jsonObject.toString().equals("{\n\"key\": 10.1\n}");
 
       jsonObject = JsonParser.parse("{\n\"key\": -10.1\n}");
-      assert jsonObject.toJson().equals("{\n\"key\": -10.1\n}");
+      assert jsonObject.toString().equals("{\n\"key\": -10.1\n}");
 
       jsonObject = JsonParser.parse("{\n\"key\": 10.1e+1\n}");
-      assert jsonObject.toJson().equals("{\n\"key\": 101\n}");
+      assert jsonObject.toString().equals("{\n\"key\": 101\n}");
 
       jsonObject = JsonParser.parse("{\n\"key\": 10.1e-1\n}");
-      assert jsonObject.toJson().equals("{\n\"key\": 1.01\n}") : jsonObject;
+      assert jsonObject.toString().equals("{\n\"key\": 1.01\n}") : jsonObject;
 
       jsonObject = JsonParser.parse("{\n\"key\": 0\n}");
-      assert jsonObject.toJson().equals("{\n\"key\": 0\n}");
+      assert jsonObject.toString().equals("{\n\"key\": 0\n}");
 
       jsonObject = JsonParser.parse("{\n\"key\": 0.1234\n}");
-      assert jsonObject.toJson().equals("{\n\"key\": 0.1234\n}");
+      assert jsonObject.toString().equals("{\n\"key\": 0.1234\n}");
 
       jsonObject = JsonParser.parse("{\n\"k1\": 1, \"k2\" : 2\n}");
-      assert jsonObject.toJson().equals("{\n\"k1\": 1,\n\"k2\": 2\n}");
+      assert jsonObject.toString().equals("{\n\"k1\": 1,\n\"k2\": 2\n}");
 
       jsonObject = JsonParser.parse("{\n\"k1\": 1, \"k2\" : 2,\"k3\":\"s3\"\n}");
-      assert jsonObject.toJson().equals("{\n\"k1\": 1,\n\"k2\": 2,\n\"k3\": \"s3\"\n}");
+      assert jsonObject.toString().equals("{\n\"k1\": 1,\n\"k2\": 2,\n\"k3\": \"s3\"\n}");
 
       jsonObject = JsonParser.parse("{\"k1\":true}");
-      assert jsonObject.toJson().equals("{\n\"k1\": true\n}");
+      assert jsonObject.toString().equals("{\n\"k1\": true\n}");
 
       jsonObject = JsonParser.parse("{\"k1\":false}");
-      assert jsonObject.toJson().equals("{\n\"k1\": false\n}");
+      assert jsonObject.toString().equals("{\n\"k1\": false\n}");
 
       jsonObject = JsonParser.parse("{\"k1\":null}");
-      assert jsonObject.toJson().equals("{\n\"k1\": null\n}");
+      assert jsonObject.toString().equals("{\n\"k1\": null\n}");
 
       jsonObject = JsonParser.parse("{\"k1\":[true,false,null]}");
-      assert jsonObject.toJson().equals("{\n\"k1\": [\ntrue,\nfalse,\nnull\n]\n}");
+      assert jsonObject.toString().equals("{\n\"k1\": [\ntrue,\nfalse,\nnull\n]\n}");
 
       jsonObject = JsonParser.parse("{\"k1\":[]}");
-      assert jsonObject.toJson().equals("{\n\"k1\": []\n}");
+      assert jsonObject.toString().equals("{\n\"k1\": []\n}");
 
       jsonObject = JsonParser.parse("{\"k1\":[[[]]]}");
-      assert jsonObject.toJson().equals("{\n\"k1\": [\n[\n[]\n]\n]\n}");
+      assert jsonObject.toString().equals("{\n\"k1\": [\n[\n[]\n]\n]\n}");
 
       jsonObject = JsonParser.parse("{\"k1\":[[[\"s\",1]]]}");
-      assert jsonObject.toJson().equals("{\n\"k1\": [\n[\n[\n\"s\",\n1\n]\n]\n]\n}");
+      assert jsonObject.toString().equals("{\n\"k1\": [\n[\n[\n\"s\",\n1\n]\n]\n]\n}");
 
       jsonObject = JsonParser.parse("{\"k1\":{}}");
-      assert jsonObject.toJson().equals("{\n\"k1\": {}\n}");
+      assert jsonObject.toString().equals("{\n\"k1\": {}\n}");
 
       jsonObject = JsonParser.parse("{\"k1\":{\"k2\":null}}");
-      assert jsonObject.toJson().equals("{\n\"k1\": {\n\"k2\": null\n}\n}");
+      assert jsonObject.toString().equals("{\n\"k1\": {\n\"k2\": null\n}\n}");
 
       jsonObject = JsonParser.parse("{\"k1\":null,\"k1\":true,\"k1\":1,\"k1\":\"s1\",\"k1\":{},\"k1\":[]}");
-      assert jsonObject.toJson().equals("{\n\"k1\": []\n}") : "Parse test 21";
+      assert jsonObject.toString().equals("{\n\"k1\": []\n}") : "Parse test 21";
 
       jsonObject = JsonParser.parse("{\"k1\": [0,1,2,3,4]}");
       Json j = jsonObject.get("k1");
@@ -274,7 +274,7 @@ public class Test
       jsonObject = new JsonObject(null);
       Date date = new Date();
       jsonObject.set("timestamp", date.getTime());
-      JsonObject jo = JsonParser.parse(jsonObject.toJson());
+      JsonObject jo = JsonParser.parse(jsonObject.toString());
       Json json = jo.get("timestamp");
       assert json instanceof JsonNumber : json;
       long timestamp = ((JsonNumber)json).getLong();

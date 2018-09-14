@@ -4,6 +4,9 @@
 
 package com.floorsix.json;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 public class JsonBoolean extends Json
 {
   private boolean bool;
@@ -15,13 +18,11 @@ public class JsonBoolean extends Json
   }
 
   @Override
-  public String toJson()
+  public void toJson(OutputStream out) throws IOException
   {
-    StringBuilder s = keyToJson();
+    keyToJson(out);
 
-    s.append(bool);
-
-    return s.toString();
+    out.write(String.valueOf(bool).getBytes());
   }
 
   public void set(boolean bool)

@@ -4,6 +4,9 @@
 
 package com.floorsix.json;
 
+import java.io.IOException;
+import java.io.OutputStream;
+
 public class JsonString extends Json
 {
   private String string;
@@ -15,20 +18,11 @@ public class JsonString extends Json
   }
 
   @Override
-  public String toJson()
+  public void toJson(OutputStream out) throws IOException
   {
-    StringBuilder s = keyToJson();
+    keyToJson(out);
 
-    /* TODO
-     * Characters that need to be escaped in string
-     * ", \, /, \b, \f, \n, \r, \t, \u1234
-     */
-
-    s.append("\"");
-    s.append(string);
-    s.append("\"");
-
-    return s.toString();
+    escapedStringToJson(string, out);
   }
 
   public void set(String string)
