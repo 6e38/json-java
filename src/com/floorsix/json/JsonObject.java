@@ -218,7 +218,7 @@ public class JsonObject extends Json
     return (JsonObject)json;
   }
 
-  void set(Json json)
+  public void set(Json json)
   {
     Json existing = get(json.getKey());
 
