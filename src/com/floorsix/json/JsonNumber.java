@@ -10,11 +10,19 @@ import java.io.OutputStream;
 public class JsonNumber extends Json
 {
   private double number;
+  private int precision; // number of digits after decimal
+  private boolean hasPrecision;
 
   public JsonNumber(String key, double number)
   {
     super(key);
     set(number);
+  }
+
+  public JsonNumber(String key, double number, int precision)
+  {
+    super(key);
+    set(number, precision);
   }
 
   @Override
@@ -26,23 +34,30 @@ public class JsonNumber extends Json
 
     StringBuilder s = new StringBuilder();
 
-    double fraction = number - (double)(int)number;
-
-    if (Math.abs(fraction) < almost0)
+    if (hasPrecision)
     {
-      s.append((long)number);
+      s.append(String.format("%." + precision + "f", number));
     }
     else
     {
-      s.append(number);
-    }
+      double fraction = number - (double)(int)number;
 
-    if (Math.abs(number) >= 10)
-    {
-      int i = s.indexOf("E");
-      if (i != -1)
+      if (Math.abs(fraction) < almost0)
       {
-        s.insert(i + 1, '+');
+        s.append((long)number);
+      }
+      else
+      {
+        s.append(number);
+      }
+
+      if (Math.abs(number) >= 10)
+      {
+        int i = s.indexOf("E");
+        if (i != -1)
+        {
+          s.insert(i + 1, '+');
+        }
       }
     }
 
@@ -52,6 +67,22 @@ public class JsonNumber extends Json
   public void set(double number)
   {
     this.number = number;
+    hasPrecision = false;
+  }
+
+  public void set(double number, int precision)
+  {
+    this.number = number;
+
+    if (precision >= 0 && precision <= 16)
+    {
+      this.precision = precision;
+      hasPrecision = true;
+    }
+    else
+    {
+      hasPrecision = false;
+    }
   }
 
   public double get()

@@ -4,39 +4,18 @@
 
 package com.floorsix.json;
 
+import com.floorsix.test.AbstractTest;
 import java.util.Date;
 import java.util.List;
 
-public class Test
+public class Test extends AbstractTest
 {
   public static void main(String[] args)
   {
-    try
-    {
-      test();
-      System.out.println("\nPASS: all tests succeeded");
-    }
-    catch (AssertionError e)
-    {
-      System.out.print("\nTest failure");
-
-      if (e.getMessage() != null)
-      {
-        System.out.print(": " + e.getMessage());
-      }
-
-      System.out.println();
-
-      for (StackTraceElement trace : e.getStackTrace())
-      {
-        System.out.println(">> " + trace);
-      }
-
-      System.out.println("\nFAIL");
-    }
+    (new Test()).run();
   }
 
-  private static void test()
+  void test()
   {
     JsonObject jsonObject;
 
@@ -423,6 +402,55 @@ public class Test
     {
       assert false : e;
     }
+  }
+
+  void testNumberPrecision()
+  {
+    JsonObject json;
+
+    json = new JsonObject(null);
+    json.set("k1", 1.9999, 1);
+    assert json.toString().equals("{\n\"k1\": 2.0\n}") : json;
+
+    json = new JsonObject(null);
+    json.set("k1", 1.9999, 4);
+    assert json.toString().equals("{\n\"k1\": 1.9999\n}") : json;
+
+    json = new JsonObject(null);
+    json.set("k1", 1, 4);
+    assert json.toString().equals("{\n\"k1\": 1.0000\n}") : json;
+
+    json = new JsonObject(null);
+    json.set("k1", 1, 0);
+    assert json.toString().equals("{\n\"k1\": 1\n}") : json;
+
+    json = new JsonObject(null);
+    json.set("k1", 1.333333333, 0);
+    assert json.toString().equals("{\n\"k1\": 1\n}") : json;
+
+    json = new JsonObject(null);
+    json.set("k1", -1.04, 1);
+    assert json.toString().equals("{\n\"k1\": -1.0\n}") : json;
+
+    json = new JsonObject(null);
+    json.set("k1", -1.05, 1);
+    assert json.toString().equals("{\n\"k1\": -1.1\n}") : json;
+
+    json = new JsonObject(null);
+    json.set("k1", 2.05, -1);
+    assert json.toString().equals("{\n\"k1\": 2.05\n}") : json;
+  }
+
+  void testNumberPrecisionWithJsonArray()
+  {
+    JsonArray json;
+
+    json = new JsonArray(null);
+    json.add(1.9999, 1);
+    json.add(2.05, -1);
+    json.add(-1.04, 1);
+    json.add(-1.05, 1);
+    assert json.toString().equals("[\n2.0,\n2.05,\n-1.0,\n-1.1\n]") : json;
   }
 }
 

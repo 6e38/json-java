@@ -85,6 +85,13 @@ public class JsonArray extends Json
     return json;
   }
 
+  public JsonNumber add(double number, int precision)
+  {
+    JsonNumber json = new JsonNumber(null, number, precision);
+    array.add(json);
+    return json;
+  }
+
   public JsonString add(String string)
   {
     JsonString json = new JsonString(null, string);

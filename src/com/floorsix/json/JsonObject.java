@@ -116,13 +116,18 @@ public class JsonObject extends Json
 
   public JsonNumber set(String key, double number)
   {
+    return set(key, number, -1);
+  }
+
+  public JsonNumber set(String key, double number, int precision)
+  {
     Json json = get(key);
 
     if (json != null)
     {
       if (json instanceof JsonNumber)
       {
-        ((JsonNumber)json).set(number);
+        ((JsonNumber)json).set(number, precision);
       }
       else
       {
@@ -133,7 +138,7 @@ public class JsonObject extends Json
 
     if (json == null)
     {
-      json = new JsonNumber(key, number);
+      json = new JsonNumber(key, number, precision);
       children.add(json);
     }
 
