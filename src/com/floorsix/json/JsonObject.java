@@ -15,6 +15,11 @@ public class JsonObject extends JsonContainer
     super(key);
   }
 
+  public JsonObject(String key, int newlineThreshold)
+  {
+    super(key, newlineThreshold);
+  }
+
   @Override
   public void toJson(OutputStream out) throws IOException
   {
@@ -189,7 +194,7 @@ public class JsonObject extends JsonContainer
 
     if (json == null)
     {
-      json = new JsonArray(key);
+      json = new JsonArray(key, getNewlineThreshold());
       children.add(json);
     }
 
@@ -215,7 +220,7 @@ public class JsonObject extends JsonContainer
 
     if (json == null)
     {
-      json = new JsonObject(key);
+      json = new JsonObject(key, getNewlineThreshold());
       children.add(json);
     }
 

@@ -19,6 +19,13 @@ public abstract class JsonContainer extends Json
     newlineThreshold = 10;
   }
 
+  public JsonContainer(String key, int newlineThreshold)
+  {
+    super(key);
+    children = new ArrayList<Json>();
+    this.newlineThreshold = newlineThreshold;
+  }
+
   public void setNewlineThreshold(int threshold)
   {
     newlineThreshold = threshold;

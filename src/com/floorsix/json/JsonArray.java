@@ -16,6 +16,11 @@ public class JsonArray extends JsonContainer
     super(key);
   }
 
+  public JsonArray(String key, int newlineThreshold)
+  {
+    super(key, newlineThreshold);
+  }
+
   @Override
   public void toJson(OutputStream out) throws IOException
   {
@@ -100,14 +105,14 @@ public class JsonArray extends JsonContainer
 
   public JsonArray addArray()
   {
-    JsonArray json = new JsonArray(null);
+    JsonArray json = new JsonArray(null, getNewlineThreshold());
     children.add(json);
     return json;
   }
 
   public JsonObject addObject()
   {
-    JsonObject json = new JsonObject(null);
+    JsonObject json = new JsonObject(null, getNewlineThreshold());
     children.add(json);
     return json;
   }

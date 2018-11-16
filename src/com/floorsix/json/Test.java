@@ -552,5 +552,21 @@ public class Test extends AbstractTest
     json.setNewlineThreshold(4);
     assert json.toString().equals("{\n\"a\":[\n2,\n3,\n4,\n5,\n11\n],\n\"b\":[7,8,9,10]\n}") : json;
   }
+
+  void testAddAfterChangeNewlineThreshold()
+  {
+    JsonObject json;
+    json = new JsonObject(null);
+    json.setNewlineThreshold(3);
+    JsonArray jsona = json.setArray("a");
+    jsona.add(2);
+    jsona.add(3);
+    jsona.add(4);
+    jsona.add(5);
+    JsonObject jsonb = json.setObject("b");
+    jsonb.set("c", 8);
+    jsonb.set("d", 10);
+    assert json.toString().equals("{\n\"a\":[\n2,\n3,\n4,\n5\n],\n\"b\":{\n\"c\":8,\n\"d\":10\n}\n}") : json;
+  }
 }
 
