@@ -30,7 +30,6 @@ public abstract class Json
     {
       escapedStringToJson(key, out);
       out.write(':');
-      out.write(' ');
     }
   }
 

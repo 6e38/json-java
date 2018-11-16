@@ -8,14 +8,11 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
 
-public class JsonObject extends Json
+public class JsonObject extends JsonContainer
 {
-  private ArrayList<Json> children;
-
   public JsonObject(String key)
   {
     super(key);
-    children = new ArrayList<Json>();
   }
 
   @Override
@@ -27,24 +24,26 @@ public class JsonObject extends Json
 
     if (children.size() > 0)
     {
+      boolean writeNewlines = countItems() > getNewlineThreshold();
+
       Json first = children.get(0);
 
       for (Json json : children)
       {
         if (json == first)
         {
-          out.write('\n');
+          if (writeNewlines) { out.write('\n'); }
         }
         else
         {
           out.write(',');
-          out.write('\n');
+          if (writeNewlines) { out.write('\n'); }
         }
 
         json.toJson(out);
       }
 
-      out.write('\n');
+      if (writeNewlines) { out.write('\n'); }
     }
 
     out.write('}');
@@ -235,9 +234,26 @@ public class JsonObject extends Json
     children.add(json);
   }
 
-  public void clear()
+  @Override
+  int countItems()
   {
-    children.clear();
+    int n = 0;
+
+    for (Json child : children)
+    {
+      n++; // Acounts for the key
+
+      if (child instanceof JsonContainer)
+      {
+        n += ((JsonContainer)child).countItems();
+      }
+      else
+      {
+        n++; // Accounts for the value
+      }
+    }
+
+    return n == 0 ? 1 : n; // Account for empty container
   }
 }
 
