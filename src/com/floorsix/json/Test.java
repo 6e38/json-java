@@ -438,7 +438,7 @@ public class Test extends AbstractTest
 
     json = new JsonObject(null);
     json.set("k1", 2.05, -1);
-    assert json.toString().equals("{\"k1\":2.05}") : json;
+    assert json.toString().equals("{\"k1\":2}") : json;
   }
 
   void testNumberPrecisionWithJsonArray()
@@ -450,7 +450,7 @@ public class Test extends AbstractTest
     json.add(2.05, -1);
     json.add(-1.04, 1);
     json.add(-1.05, 1);
-    assert json.toString().equals("[2.0,2.05,-1.0,-1.1]") : json;
+    assert json.toString().equals("[2.0,2,-1.0,-1.1]") : json;
   }
 
   void testArrayNewlineInsertion()
