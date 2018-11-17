@@ -568,5 +568,19 @@ public class Test extends AbstractTest
     jsonb.set("d", 10);
     assert json.toString().equals("{\n\"a\":[\n2,\n3,\n4,\n5\n],\n\"b\":{\n\"c\":8,\n\"d\":10\n}\n}") : json;
   }
+
+  void testGlobalPrecision()
+  {
+    JsonObject json;
+    json = new JsonObject(null);
+    json.setNumberPrecision(2);
+    json.set("a", 1);
+    json.set("b", 2.2);
+    json.set("c", 3.003, 0);
+    json.set("d", 4.00004, 5);
+    assert json.toString().equals("{\"a\":1.00,\"b\":2.20,\"c\":3,\"d\":4.00004}") : json;
+    json.setNumberPrecision(3);
+    assert json.toString().equals("{\"a\":1.000,\"b\":2.200,\"c\":3.003,\"d\":4.000}") : json;
+  }
 }
 
