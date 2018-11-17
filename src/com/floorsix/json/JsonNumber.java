@@ -34,7 +34,11 @@ public class JsonNumber extends Json
 
     StringBuilder s = new StringBuilder();
 
-    if (hasPrecision)
+    if (precision < 0)
+    {
+      System.out.println("WHAT!?");
+    }
+    if (hasPrecision && precision >= 0)
     {
       s.append(String.format("%." + precision + "f", number));
     }
@@ -67,22 +71,28 @@ public class JsonNumber extends Json
   public void set(double number)
   {
     this.number = number;
-    hasPrecision = false;
   }
 
   public void set(double number, int precision)
   {
     this.number = number;
 
-    if (precision >= 0 && precision <= 16)
+    if (precision < 0)
     {
-      this.precision = precision;
-      hasPrecision = true;
+      precision = 0;
     }
-    else
+    else if (precision > 16)
     {
-      hasPrecision = false;
+      precision = 16;
     }
+
+    setNumberPrecision(precision);
+  }
+
+  public void setNumberPrecision(int precision)
+  {
+    this.precision = precision;
+    hasPrecision = true;
   }
 
   public double get()

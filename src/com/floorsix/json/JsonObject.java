@@ -15,9 +15,9 @@ public class JsonObject extends JsonContainer
     super(key);
   }
 
-  public JsonObject(String key, int newlineThreshold)
+  public JsonObject(String key, JsonContainer parent)
   {
-    super(key, newlineThreshold);
+    super(key, parent);
   }
 
   @Override
@@ -120,18 +120,13 @@ public class JsonObject extends JsonContainer
 
   public JsonNumber set(String key, double number)
   {
-    return set(key, number, -1);
-  }
-
-  public JsonNumber set(String key, double number, int precision)
-  {
     Json json = get(key);
 
     if (json != null)
     {
       if (json instanceof JsonNumber)
       {
-        ((JsonNumber)json).set(number, precision);
+        ((JsonNumber)json).set(number);
       }
       else
       {
@@ -142,11 +137,24 @@ public class JsonObject extends JsonContainer
 
     if (json == null)
     {
-      json = new JsonNumber(key, number, precision);
+      json = new JsonNumber(key, number);
+
+      if (isNumberPrecisionSet())
+      {
+        ((JsonNumber)json).setNumberPrecision(getNumberPrecision());
+      }
+
       children.add(json);
     }
 
     return (JsonNumber)json;
+  }
+
+  public JsonNumber set(String key, double number, int precision)
+  {
+    JsonNumber json = set(key, number);
+    json.setNumberPrecision(precision);
+    return json;
   }
 
   public JsonString set(String key, String string)
@@ -194,7 +202,7 @@ public class JsonObject extends JsonContainer
 
     if (json == null)
     {
-      json = new JsonArray(key, getNewlineThreshold());
+      json = new JsonArray(key, this);
       children.add(json);
     }
 
@@ -220,7 +228,7 @@ public class JsonObject extends JsonContainer
 
     if (json == null)
     {
-      json = new JsonObject(key, getNewlineThreshold());
+      json = new JsonObject(key, this);
       children.add(json);
     }
 

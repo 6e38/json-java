@@ -16,9 +16,9 @@ public class JsonArray extends JsonContainer
     super(key);
   }
 
-  public JsonArray(String key, int newlineThreshold)
+  public JsonArray(String key, JsonContainer parent)
   {
-    super(key, newlineThreshold);
+    super(key, parent);
   }
 
   @Override
@@ -85,6 +85,12 @@ public class JsonArray extends JsonContainer
   public JsonNumber add(double number)
   {
     JsonNumber json = new JsonNumber(null, number);
+
+    if (isNumberPrecisionSet())
+    {
+      json.setNumberPrecision(getNumberPrecision());
+    }
+
     children.add(json);
     return json;
   }
@@ -105,14 +111,14 @@ public class JsonArray extends JsonContainer
 
   public JsonArray addArray()
   {
-    JsonArray json = new JsonArray(null, getNewlineThreshold());
+    JsonArray json = new JsonArray(null, this);
     children.add(json);
     return json;
   }
 
   public JsonObject addObject()
   {
-    JsonObject json = new JsonObject(null, getNewlineThreshold());
+    JsonObject json = new JsonObject(null, this);
     children.add(json);
     return json;
   }
